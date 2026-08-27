@@ -140,24 +140,30 @@ FC
 ```text
 PyTorch_pra/
 │
-├── data.py
-│   └── 数据集和 DataLoader
+├── LICENSE
 │
-├── model.py
-│   └── SimpleCNN 模型
+├── .gitignore
 │
-├── engine.py
-│   ├── train_one_epoch()
-│   ├── evaluate()
-│   └── predict()
-│
-├── main.py
-│   └── 组织完整实验流程
-│
-├── best_model.pth
-│   └── 验证集表现最好的模型
-│
-└── README.md
+└── simple_cnn/
+    │
+    ├── data.py
+    │   └── 数据集和 DataLoader
+    │
+    ├── model.py
+    │   └── SimpleCNN 模型
+    │
+    ├── engine.py
+    │   ├── train_one_epoch()
+    │   ├── evaluate()
+    │   └── predict()
+    │
+    ├── main.py
+    │   └── 组织完整实验流程
+    │
+    ├── best_model.pth
+    │   └── 验证集表现最好的模型（运行 main.py 后生成）
+    │
+    └── README.md
 ```
 
 现在各文件的职责比较明确：
@@ -721,6 +727,7 @@ pip install torch torchvision medmnist matplotlib scikit-learn
 运行：
 
 ```bash
+cd simple_cnn
 python main.py
 ```
 

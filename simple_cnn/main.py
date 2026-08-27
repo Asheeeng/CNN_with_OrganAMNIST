@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -5,6 +6,10 @@ import matplotlib.pyplot as plt
 from model import SimpleCNN
 from data import get_dataloaders
 from engine import train_one_epoch, evaluate, predict
+
+# 基于当前文件位置确定 simple_cnn 目录，保证 best_model.pth 始终保存在本目录下
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BEST_MODEL_PATH = os.path.join(BASE_DIR, "best_model.pth")
 
 '''
 SimpleCNN
@@ -117,7 +122,7 @@ def main():
 
             torch.save(
                 model.state_dict(),
-                "best_model.pth"
+                BEST_MODEL_PATH
             )
 
             print(
@@ -141,7 +146,7 @@ def main():
 
     model.load_state_dict(
         torch.load(
-            "best_model.pth",
+            BEST_MODEL_PATH,
             map_location=device,
             weights_only=True
         )
