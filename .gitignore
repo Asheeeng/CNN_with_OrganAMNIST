@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# PyCharm / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Model weights & data
+*.pth
+*.pt
+*.h5
+*.pkl
+*.npz
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+logs/
+
+# Plots & images
+*.png
+*.jpg
+*.jpeg
+*.pdf
