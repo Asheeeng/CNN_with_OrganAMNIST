@@ -144,42 +144,45 @@ PyTorch_pra/
 │
 ├── .gitignore
 │
-└── simple_cnn/
-    │
-    ├── data.py
-    │   └── 数据集和 DataLoader
-    │
-    ├── model.py
-    │   └── SimpleCNN 模型
-    │
-    ├── engine.py
-    │   ├── train_one_epoch()
-    │   ├── evaluate()
-    │   └── predict()
-    │
-    ├── main.py
-    │   └── 组织完整实验流程
-    │
-    ├── best_model.pth
-    │   └── 验证集表现最好的模型（运行 main.py 后生成）
-    │
-    └── README.md
+├── common/                      ← 共享工具包（供 simple_cnn、resnet18 等复用）
+│   ├── __init__.py
+│   ├── data.py
+│   │   └── OrganAMNIST 数据集和 DataLoader
+│   └── engine.py
+│       ├── train_one_epoch()
+│       ├── evaluate()
+│       └── predict()
+│
+├── simple_cnn/
+│   ├── model.py
+│   │   └── SimpleCNN 模型
+│   ├── main.py
+│   │   └── 组织完整实验流程（入口处自动注入项目根到 sys.path 导入 common）
+│   ├── best_model.pth
+│   │   └── 验证集表现最好的模型（运行 main.py 后生成）
+│   └── README.md
+│
+└── resnet18/
+    ├── __init__.py
+    ├── basic_block.py
+    ├── resnet18.py
+    └── main.py
 ```
 
-现在各文件的职责比较明确：
+现在各文件/包的职责比较明确：
 
 ```text
-data.py
-负责数据
+common/data.py
+负责数据（可被 simple_cnn、resnet18 复用）
 
-model.py
-负责模型
+common/engine.py
+负责训练和评价逻辑（可被 simple_cnn、resnet18 复用）
 
-engine.py
-负责训练和评价逻辑
+simple_cnn/model.py
+负责 SimpleCNN 模型
 
-main.py
-负责把整个实验组织起来
+simple_cnn/main.py
+负责把整个实验组织起来，并在入口注入项目根目录，保证跨目录导入 common/ 稳定
 ```
 
 这也是我第一次真正理解代码“模块化”是干什么的。

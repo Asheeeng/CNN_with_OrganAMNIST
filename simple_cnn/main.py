@@ -1,14 +1,26 @@
 import os
+import sys
+
+# ------------------------------------------------------------------
+# 把项目根目录（simple_cnn/ 的上一级）加入 sys.path，
+# 保证无论以「python simple_cnn/main.py」还是
+# 「cd simple_cnn && python main.py」运行，都能导入顶层包 common/
+# ------------------------------------------------------------------
+_CURRENT_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_CURRENT_FILE_DIR)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
 from model import SimpleCNN
-from data import get_dataloaders
-from engine import train_one_epoch, evaluate, predict
+from common.data import get_dataloaders
+from common.engine import train_one_epoch, evaluate, predict
 
 # 基于当前文件位置确定 simple_cnn 目录，保证 best_model.pth 始终保存在本目录下
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = _CURRENT_FILE_DIR
 BEST_MODEL_PATH = os.path.join(BASE_DIR, "best_model.pth")
 
 '''
