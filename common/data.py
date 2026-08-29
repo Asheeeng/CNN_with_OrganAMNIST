@@ -1,9 +1,16 @@
+import numpy as np
+
+from torch.utils.data import DataLoader, Subset
 from medmnist import OrganAMNIST
 from torchvision import transforms
 from torch.utils.data import DataLoader
 
 
-def get_dataloaders(batch_size=64):
+def get_dataloaders(
+    batch_size=64,
+    samples_per_class=None,
+    seed=42
+):
 
     # =========================
     # 1. Transform
@@ -21,6 +28,36 @@ def get_dataloaders(batch_size=64):
         transform=transform,
         download=True
     )
+
+    if samples_per_class is not None:
+
+        labels = train_dataset.labels.squeeze()
+
+        rng = np.random.default_rng(seed)
+
+        selected_indices = []
+
+        for class_id in range(11):
+            class_indices = np.where(
+                labels == class_id
+            )[0]
+
+            sampled_indices = rng.choice(
+                class_indices,
+                size=samples_per_class,
+                replace=False
+            )
+
+            selected_indices.extend(
+                sampled_indices.tolist()
+            )
+
+        train_dataset = Subset(
+            train_dataset,
+            selected_indices
+        )
+
+        
 
     val_dataset = OrganAMNIST(
         split="val",
