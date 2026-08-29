@@ -2,11 +2,11 @@ import torch
 
 
 def train_one_epoch(
-        model,
-        data_loader,
-        criterion,
-        optimizer,
-        device
+    model,
+    data_loader,
+    criterion,
+    optimizer,
+    device
 ):
     # 训练模式，Dropout 开启
     model.train()
@@ -15,7 +15,7 @@ def train_one_epoch(
     total_correct = 0
     total_samples = 0
 
-    for images, labels in data_loader:
+    for batch_idx, (images, labels) in enumerate(data_loader, start=1):
 
         images = images.to(device)
         labels = labels.squeeze(1).long().to(device)
@@ -36,9 +36,16 @@ def train_one_epoch(
         optimizer.step()
 
         # -------------------------
+        # 查看训练进度
+        # -------------------------
+        if batch_idx % 20 == 0 or batch_idx == len(data_loader):
+            print(
+                f"Batch {batch_idx}/{len(data_loader)}"
+            )
+
+        # -------------------------
         # 统计结果
         # -------------------------
-
         batch_size = labels.size(0)
 
         total_loss += loss.item() * batch_size
@@ -58,10 +65,10 @@ def train_one_epoch(
 
 
 def evaluate(
-        model,
-        data_loader,
-        criterion,
-        device
+    model,
+    data_loader,
+    criterion,
+    device
 ):
     # 评估模式，Dropout 关闭
     model.eval()
@@ -101,11 +108,10 @@ def evaluate(
 
 
 def predict(
-        model,
-        data_loader,
-        device
+    model,
+    data_loader,
+    device
 ):
-
     model.eval()
 
     all_labels = []
